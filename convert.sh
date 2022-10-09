@@ -20,7 +20,8 @@ checkDuplicate(){
   found=false
 
   cd output
-
+  mkdir complete
+  cd complete
   for subfile in *; do
 
     if [ $1 == $subfile ]; then
@@ -29,11 +30,12 @@ checkDuplicate(){
       found=true
     fi
   done
-
+  cd ..
   if [ $found == false ]; then
     echo "Did the found"
 #   touch ../output/$1
-    sudo ffmpeg -y -i "../$1" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy ./$1 #\;
+    ffmpeg -y -i "../$1" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy ./$1 #\;
+    touch complete/$1
 #   touch $1
 #   touch "./output/$file"
   else
@@ -59,4 +61,7 @@ if [ $1 == "clear" ]; then
   clearOutput
 else
   getEpisodeName
+  touch "Completed conversion $(date)"
 fi
+
+
